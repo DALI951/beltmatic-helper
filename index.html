@@ -310,7 +310,7 @@ function solveMulExp(target,ext){
 }
 function solveExpOnly(target,ext){
   if(target in ext)return[{op:'extract',value:target}];
-  for(const base of ext){if(base<=1)continue;for(const exp of ext){if(exp<=1)continue;try{if(Math.pow(base,exp)===target){const p=[{op:'extract',value:base}];for(let i=0;i<exp-1;i++){const lv=p[p.length-1].result||p[p.length-1].value;p.push({op:'*',a:lv,b:base,result:lv*base});}return p;}}catch(e){break;}}
+  for(const base of ext){if(base<=1)continue;for(const exp of ext){if(exp<=1)continue;try{if(Math.pow(base,exp)===target){const p=[{op:'extract',value:base}];for(let i=0;i<exp-1;i++){const lv=p[p.length-1].result||p[p.length-1].value;p.push({op:'*',a:lv,b:base,result:lv*base});}return p;}}catch(e){break;}}}
   return null;
 }
 
