@@ -1,0 +1,86 @@
+{
+  "belt": {
+    "name": "Belt",
+    "description": "Increases belt speed",
+    "levels": [
+      {"level": 1, "speed": "1/s", "requirements": [{"number": 1, "count": 200}]},
+      {"level": 2, "speed": "2/s", "requirements": [{"number": 1, "count": 1000}, {"number": 2, "count": 500}]},
+      {"level": 3, "speed": "3/s", "requirements": [{"number": 2, "count": 4000}, {"number": 3, "count": 3000}, {"number": 4, "count": 1500}]},
+      {"level": 4, "speed": "4/s", "requirements": [{"number": 3, "count": 9000}, {"number": 4, "count": 7000}, {"number": 5, "count": 6000}]},
+      {"level": 5, "speed": "5/s", "requirements": [{"number": 3, "count": 9000}, {"number": 4, "count": 7000}, {"number": 5, "count": 6000}]},
+      {"level": 6, "speed": "6/s", "requirements": [{"number": 4, "count": 11000}, {"number": 5, "count": 9000}, {"number": 6, "count": 8000}]},
+      {"level": 7, "speed": "7/s", "requirements": [{"number": 5, "count": 15000}, {"number": 6, "count": 12000}, {"number": 7, "count": 10000}]},
+      {"level": 8, "speed": "8/s", "requirements": [{"number": 6, "count": 20000}, {"number": 7, "count": 16000}, {"number": 8, "count": 12000}]}
+    ]
+  },
+  "extractor": {
+    "name": "Extractor",
+    "description": "Increases extractor belt count",
+    "levels": [
+      {"level": 1, "speed": "1 Belt", "requirements": [{"number": 1, "count": 300}]},
+      {"level": 2, "speed": "2 Belts", "requirements": [{"number": 2, "count": 2000}, {"number": 3, "count": 1000}]},
+      {"level": 3, "speed": "3 Belts", "requirements": [{"number": 3, "count": 5000}, {"number": 4, "count": 2000}, {"number": 5, "count": 1000}]},
+      {"level": 4, "speed": "4 Belts", "requirements": [{"number": 4, "count": 8000}, {"number": 5, "count": 3000}, {"number": 6, "count": 2000}]},
+      {"level": 5, "speed": "5 Belts", "requirements": [{"number": 5, "count": 10000}, {"number": 6, "count": 4000}, {"number": 7, "count": 3000}]},
+      {"level": 6, "speed": "6 Belts", "requirements": [{"number": 6, "count": 12000}, {"number": 7, "count": 8000}, {"number": 8, "count": 4000}]},
+      {"level": 7, "speed": "7 Belts", "requirements": [{"number": 7, "count": 15000}, {"number": 8, "count": 12000}, {"number": 9, "count": 6000}]},
+      {"level": 8, "speed": "8 Belts", "requirements": [{"number": 8, "count": 20000}, {"number": 9, "count": 17000}, {"number": 10, "count": 20000}]}
+    ]
+  },
+  "adder": {
+    "name": "Adder",
+    "description": "Increases adder speed",
+    "levels": [
+      {"level": 1, "speed": "0.25/s", "requirements": [{"number": 2, "count": 450}]},
+      {"level": 2, "speed": "0.333/s", "requirements": [{"number": 2, "count": 3000}, {"number": 3, "count": 1500}]},
+      {"level": 3, "speed": "0.4/s", "requirements": [{"number": 3, "count": 5000}, {"number": 4, "count": 4000}, {"number": 5, "count": 3000}]},
+      {"level": 4, "speed": "0.5/s", "requirements": [{"number": 4, "count": 7000}, {"number": 5, "count": 5000}, {"number": 6, "count": 4000}]},
+      {"level": 5, "speed": "0.667/s", "requirements": [{"number": 5, "count": 12000}, {"number": 6, "count": 10000}, {"number": 7, "count": 5000}]},
+      {"level": 6, "speed": "1/s", "requirements": [{"number": 6, "count": 15000}, {"number": 7, "count": 12000}, {"number": 8, "count": 8000}]},
+      {"level": 7, "speed": "1.5/s", "requirements": [{"number": 7, "count": 20000}, {"number": 8, "count": 17000}, {"number": 9, "count": 10000}]},
+      {"level": 8, "speed": "2/s", "requirements": [{"number": 8, "count": 30000}, {"number": 9, "count": 20000}, {"number": 10, "count": 16000}]}
+    ]
+  },
+  "multiplier": {
+    "name": "Multiplier",
+    "description": "Increases multiplier speed",
+    "levels": [
+      {"level": 1, "speed": "0.2/s", "requirements": [{"number": 4, "count": 500}]},
+      {"level": 2, "speed": "0.3/s", "requirements": [{"number": 4, "count": 5000}, {"number": 5, "count": 2500}]},
+      {"level": 3, "speed": "0.4/s", "requirements": [{"number": 5, "count": 10000}, {"number": 6, "count": 7000}, {"number": 7, "count": 4000}]},
+      {"level": 4, "speed": "0.5/s", "requirements": [{"number": 6, "count": 11000}, {"number": 7, "count": 6000}, {"number": 8, "count": 5000}]},
+      {"level": 5, "speed": "0.6/s", "requirements": [{"number": 7, "count": 17000}, {"number": 8, "count": 13000}, {"number": 9, "count": 6000}]},
+      {"level": 6, "speed": "0.7/s", "requirements": [{"number": 8, "count": 22000}, {"number": 9, "count": 17000}, {"number": 10, "count": 10000}]},
+      {"level": 7, "speed": "0.8/s", "requirements": [{"number": 9, "count": 35000}, {"number": 10, "count": 25000}, {"number": 11, "count": 17000}]},
+      {"level": 8, "speed": "1/s", "requirements": [{"number": 10, "count": 37000}, {"number": 11, "count": 30000}, {"number": 12, "count": 20000}]}
+    ]
+  },
+  "subtractor_divider": {
+    "name": "Subtractor / Divider",
+    "description": "Increases subtractor and divider speed",
+    "levels": [
+      {"level": 1, "speed": "0.2/s", "requirements": [{"number": 6, "count": 1000}]},
+      {"level": 2, "speed": "0.3/s", "requirements": [{"number": 6, "count": 5000}, {"number": 7, "count": 2500}]},
+      {"level": 3, "speed": "0.4/s", "requirements": [{"number": 7, "count": 10000}, {"number": 8, "count": 7000}, {"number": 9, "count": 4000}]},
+      {"level": 4, "speed": "0.5/s", "requirements": [{"number": 8, "count": 15000}, {"number": 9, "count": 10000}, {"number": 10, "count": 6000}]},
+      {"level": 5, "speed": "0.6/s", "requirements": [{"number": 9, "count": 22000}, {"number": 10, "count": 15000}, {"number": 11, "count": 8000}]},
+      {"level": 6, "speed": "0.7/s", "requirements": [{"number": 10, "count": 32000}, {"number": 11, "count": 21000}, {"number": 12, "count": 13000}]},
+      {"level": 7, "speed": "0.8/s", "requirements": [{"number": 11, "count": 43000}, {"number": 12, "count": 33000}, {"number": 13, "count": 26000}]},
+      {"level": 8, "speed": "1/s", "requirements": [{"number": 12, "count": 50000}, {"number": 13, "count": 40000}, {"number": 14, "count": 30000}]}
+    ]
+  },
+  "exponentiator": {
+    "name": "Exponentiator",
+    "description": "Increases exponentiator speed",
+    "levels": [
+      {"level": 1, "speed": "0.15/s", "requirements": [{"number": 8, "count": 2000}]},
+      {"level": 2, "speed": "0.2/s", "requirements": [{"number": 8, "count": 10000}, {"number": 9, "count": 5000}]},
+      {"level": 3, "speed": "0.25/s", "requirements": [{"number": 9, "count": 15000}, {"number": 10, "count": 10000}, {"number": 11, "count": 5000}]},
+      {"level": 4, "speed": "0.333/s", "requirements": [{"number": 10, "count": 22000}, {"number": 11, "count": 15000}, {"number": 12, "count": 8000}]},
+      {"level": 5, "speed": "0.4/s", "requirements": [{"number": 11, "count": 30000}, {"number": 12, "count": 20000}, {"number": 13, "count": 10000}]},
+      {"level": 6, "speed": "0.5/s", "requirements": [{"number": 12, "count": 40000}, {"number": 13, "count": 28000}, {"number": 14, "count": 15000}]},
+      {"level": 7, "speed": "0.6/s", "requirements": [{"number": 13, "count": 50000}, {"number": 14, "count": 35000}, {"number": 15, "count": 20000}]},
+      {"level": 8, "speed": "0.75/s", "requirements": [{"number": 14, "count": 60000}, {"number": 15, "count": 45000}, {"number": 16, "count": 25000}]}
+    ]
+  }
+}

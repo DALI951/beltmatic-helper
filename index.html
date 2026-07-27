@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beltmatic Helper</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#1a1a2e;color:#e0e0e0;min-height:100vh}
+.header{background:linear-gradient(135deg,#16213e,#0f3460);padding:16px 24px;display:flex;align-items:center;gap:12px;border-bottom:2px solid #e94560}
+.header h1{font-size:22px;color:#e94560;font-weight:700}
+.header .sub{font-size:13px;color:#888}
+.tabs{display:flex;background:#16213e;border-bottom:1px solid #333}
+.tab{padding:12px 24px;cursor:pointer;font-size:14px;font-weight:600;color:#888;border-bottom:3px solid transparent;transition:.2s}
+.tab:hover{color:#ccc}.tab.active{color:#e94560;border-bottom-color:#e94560}
+.tc{display:none;padding:24px;max-width:1200px;margin:0 auto}.tc.active{display:block}
+.card{background:#16213e;border-radius:8px;padding:20px;margin-bottom:16px;border:1px solid #333}
+.card h2{font-size:16px;color:#e94560;margin-bottom:12px}
+.card h3{font-size:14px;color:#aaa;margin-bottom:8px;margin-top:12px}
+label{display:block;font-size:13px;color:#aaa;margin-bottom:4px}
+input[type="number"],input[type="text"]{background:#0f3460;border:1px solid #444;color:#fff;padding:8px 12px;border-radius:4px;font-size:14px;width:200px;outline:none}
+input:focus{border-color:#e94560}
+.cg{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.cg label{display:flex;align-items:center;gap:6px;background:#0f3460;padding:6px 12px;border-radius:4px;cursor:pointer;font-size:13px;color:#ccc;border:1px solid #333;transition:.2s}
+.cg label:hover{border-color:#e94560}
+.cg input[type="checkbox"]{accent-color:#e94560}
+.btn{background:#e94560;color:#fff;border:none;padding:10px 24px;border-radius:4px;font-size:14px;font-weight:600;cursor:pointer;transition:.2s;margin-top:12px}
+.btn:hover{background:#c73e54}
+.btn:disabled{background:#555;cursor:not-allowed}
+.btn2{background:#333;border:1px solid #555;padding:8px 16px;border-radius:4px;color:#ccc;cursor:pointer;font-size:13px}
+.btn2:hover{background:#444}
+.extract-section{margin-top:8px}
+.extract-group{margin-bottom:10px}
+.extract-label{font-size:11px;font-weight:600;color:#666;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.unlock{font-size:10px;color:#555;margin-left:2px}
+.custom-num-row{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.btn-sm{padding:5px 10px;border-radius:4px;border:1px solid #555;background:#16213e;color:#ccc;font-size:11px;cursor:pointer}
+.btn-sm:hover{border-color:#e94560;color:#fff}
+.custom-tag{display:inline-flex;align-items:center;gap:4px;background:#0f3460;padding:4px 8px;border-radius:4px;font-size:12px;color:#4fc3f7;border:1px solid #333}
+.custom-tag .rm{cursor:pointer;color:#e94560;font-weight:700;margin-left:2px}
+.custom-tag .rm:hover{color:#ff6b81}
+.sol-box{background:#0a0a1a;border:1px solid #333;border-radius:6px;padding:16px;margin-top:12px;font-family:Consolas,'Courier New',monospace;font-size:13px;line-height:1.8;max-height:400px;overflow-y:auto}
+.sol-box .step{padding:4px 0;border-bottom:1px solid #1a1a2e}
+.sol-box .step:last-child{border-bottom:none}
+.sol-box .ext{color:#4fc3f7}
+.sol-box .op{color:#81c784}
+.sol-box .res{color:#e94560;font-weight:700}
+.bld-box{background:#0a0a1a;border:1px solid #333;border-radius:6px;padding:16px;margin-top:12px}
+.bld-item{display:inline-flex;align-items:center;gap:6px;background:#16213e;padding:6px 12px;border-radius:4px;margin:4px;font-size:13px}
+.bld-item .cnt{color:#e94560;font-weight:700}
+.ugrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
+.ucard{background:#0f3460;border-radius:6px;padding:14px;border:1px solid #333}
+.ucard .nm{font-weight:700;font-size:14px;color:#4fc3f7;margin-bottom:4px}
+.ucard .li{font-size:12px;color:#888;margin-bottom:8px}
+.lctl{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.lctl button{width:28px;height:28px;border-radius:4px;border:1px solid #555;background:#1a1a2e;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.lctl button:hover{background:#e94560;border-color:#e94560}
+.lctl .cl{font-size:18px;font-weight:700;color:#e94560;min-width:30px;text-align:center}
+.req{font-size:12px;margin-top:4px}
+.rr{display:flex;align-items:center;gap:6px;padding:3px 0}
+.rr .rn{color:#4fc3f7;font-weight:700;min-width:40px}
+.rr .rc{color:#888}
+.hgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px}
+.hnum{display:flex;align-items:center;gap:10px;background:#0f3460;padding:10px 14px;border-radius:6px}
+.hnum .hn{font-size:18px;font-weight:700;color:#4fc3f7}
+.hnum .hi{font-size:12px;color:#888}
+.hnum .hr{color:#e94560;font-weight:600}
+.no-sol{color:#ffb74d;padding:14px;font-size:14px;line-height:1.6;background:#2a1a0a;border:1px solid #553300;border-radius:6px}
+.pctrl{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.tool{padding:8px 14px;border-radius:4px;border:2px solid #333;background:#16213e;color:#ccc;cursor:pointer;font-size:12px;font-weight:600;transition:.2s}
+.tool:hover{border-color:#e94560}
+.tool.active{border-color:#e94560;background:#e94560;color:#fff}
+.pwrap{background:#0a0a1a;border:1px solid #333;border-radius:6px;overflow:hidden;position:relative}
+canvas#fc{display:block;cursor:crosshair;width:100%;background:#0a0a1a}
+.tpl{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.tplb{padding:6px 12px;background:#16213e;border:1px solid #444;border-radius:4px;color:#ccc;cursor:pointer;font-size:12px}
+.tplb:hover{border-color:#e94560;color:#fff}
+.sl{display:flex;gap:8px;margin-top:12px}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:#0a0a1a}::-webkit-scrollbar-thumb{background:#444;border-radius:3px}
+</style>
+</head>
+<body>
+<div class="header"><h1>Beltmatic Helper</h1><span class="sub">Your factory automation companion</span></div>
+<div class="tabs">
+  <div class="tab active" data-tab="solver">Number Solver</div>
+  <div class="tab" data-tab="upgrades">Upgrade Tracker</div>
+  <div class="tab" data-tab="planner">Factory Planner</div>
+</div>
+
+<div id="solver" class="tc active">
+  <div class="card">
+    <h2>Solve a Number</h2>
+    <label>Target number to produce</label>
+    <input type="number" id="target" min="1" max="99999999" value="75" style="width:200px">
+    <h3>Extractable Numbers</h3>
+    <p style="font-size:12px;color:#666;margin-bottom:8px">Check which numbers you can extract from the map</p>
+    <div class="extract-section">
+      <div class="extract-group"><div class="extract-label">Early Game (Levels 1-9)</div>
+        <div class="cg" id="eg1">
+          <label><input type="checkbox" value="1" checked> 1 <span class="unlock">Lv1</span></label>
+          <label><input type="checkbox" value="2" checked> 2 <span class="unlock">Lv3</span></label>
+          <label><input type="checkbox" value="3" checked> 3 <span class="unlock">Lv5</span></label>
+          <label><input type="checkbox" value="4" checked> 4 <span class="unlock">Lv6</span></label>
+          <label><input type="checkbox" value="5" checked> 5 <span class="unlock">Lv8</span></label>
+        </div>
+      </div>
+      <div class="extract-group"><div class="extract-label">Mid Game (Levels 9-14)</div>
+        <div class="cg" id="eg2">
+          <label><input type="checkbox" value="6"> 6 <span class="unlock">Lv9</span></label>
+          <label><input type="checkbox" value="7"> 7 <span class="unlock">Lv11</span></label>
+          <label><input type="checkbox" value="8"> 8 <span class="unlock">Lv12</span></label>
+          <label><input type="checkbox" value="9"> 9 <span class="unlock">Lv14</span></label>
+        </div>
+      </div>
+      <div class="extract-group"><div class="extract-label">Late Game (Levels 15+)</div>
+        <div class="cg" id="eg3">
+          <label><input type="checkbox" value="10"> 10 <span class="unlock">Lv15</span></label>
+          <label><input type="checkbox" value="11"> 11 <span class="unlock">Lv15</span></label>
+          <label><input type="checkbox" value="12"> 12 <span class="unlock">Lv17</span></label>
+          <label><input type="checkbox" value="13"> 13 <span class="unlock">Lv18</span></label>
+          <label><input type="checkbox" value="14"> 14 <span class="unlock">Lv20</span></label>
+          <label><input type="checkbox" value="15"> 15 <span class="unlock">Lv21</span></label>
+        </div>
+      </div>
+      <div class="extract-group"><div class="extract-label">Custom Numbers</div>
+        <div class="custom-num-row">
+          <input type="number" id="cnum" min="1" max="9999" placeholder="Add number..." style="width:120px">
+          <button class="btn-sm" onclick="addCustom()">+ Add</button>
+          <button class="btn-sm" onclick="selAll()">All 1-9</button>
+          <button class="btn-sm" onclick="selNone()">None</button>
+        </div>
+        <div class="cg" id="eg4"></div>
+      </div>
+    </div>
+    <h3>Operations Unlocked</h3>
+    <div class="cg" id="og">
+      <label><input type="checkbox" value="+" checked> Addition (+)</label>
+      <label><input type="checkbox" value="*" checked> Multiplication (*)</label>
+      <label><input type="checkbox" value="-"> Subtraction (-)</label>
+      <label><input type="checkbox" value="/"> Division (/)</label>
+      <label><input type="checkbox" value="^"> Exponentiation (^)</label>
+    </div>
+    <button class="btn" id="solvebtn" onclick="solve()">Solve</button>
+  </div>
+  <div id="sarea"></div>
+</div>
+
+<div id="upgrades" class="tc">
+  <div class="card"><h2>Upgrade Tracker</h2>
+    <p style="font-size:13px;color:#888;margin-bottom:12px">Track your current upgrade levels. Saved in your browser.</p>
+    <div id="ugrid" class="ugrid"></div>
+  </div>
+  <div class="card"><h2>Numbers Needed at Hub</h2>
+    <p style="font-size:13px;color:#888;margin-bottom:12px">Numbers you still need to deliver for next upgrades.</p>
+    <div id="hub" class="hgrid"></div>
+  </div>
+</div>
+
+<div id="planner" class="tc">
+  <div class="card"><h2>Factory Planner</h2>
+    <p style="font-size:13px;color:#888;margin-bottom:12px">Select a tool, then click on the grid to place. Drag to draw belts. Right-click to erase.</p>
+    <div class="pctrl">
+      <div class="tool active" data-t="select" onclick="setTool('select')">Select</div>
+      <div class="tool" data-t="extractor" onclick="setTool('extractor')">Extractor</div>
+      <div class="tool" data-t="adder" onclick="setTool('adder')">Adder</div>
+      <div class="tool" data-t="multiplier" onclick="setTool('multiplier')">Multiplier</div>
+      <div class="tool" data-t="subtractor" onclick="setTool('subtractor')">Subtractor</div>
+      <div class="tool" data-t="divider" onclick="setTool('divider')">Divider</div>
+      <div class="tool" data-t="exponentiator" onclick="setTool('exponentiator')">Exponentiator</div>
+      <div class="tool" data-t="belt" onclick="setTool('belt')">Belt</div>
+      <div class="tool" data-t="hub" onclick="setTool('hub')">Hub</div>
+      <div class="tool" data-t="eraser" onclick="setTool('eraser')">Eraser</div>
+    </div>
+    <div class="tpl">
+      <span style="font-size:12px;color:#888;align-self:center">Templates:</span>
+      <div class="tplb" onclick="loadTpl('ac')">Adder (1+1=2)</div>
+      <div class="tplb" onclick="loadTpl('ml')">Multiplier (2*3=6)</div>
+      <div class="tplb" onclick="loadTpl('ex')">Exponent (2^3=8)</div>
+    </div>
+    <div class="pwrap"><canvas id="fc" width="900" height="600"></canvas></div>
+    <div class="sl">
+      <button class="btn2" onclick="clearPlanner()">Clear</button>
+      <button class="btn2" onclick="exportLayout()">Export JSON</button>
+      <button class="btn2" onclick="importLayout()">Import JSON</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// === TABS ===
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  document.querySelectorAll('.tc').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');
+  document.getElementById(t.dataset.tab).classList.add('active');
+  if(t.dataset.tab==='planner') setTimeout(drawPlanner,50);
+}));
+
+// === SOLVER (JavaScript port) ===
+function getExt(){
+  const s=new Set();
+  document.querySelectorAll('#eg1 input:checked,#eg2 input:checked,#eg3 input:checked,#eg4 input:checked').forEach(c=>s.add(+c.value));
+  return[...s].sort((a,b)=>a-b);
+}
+function selAll(){document.querySelectorAll('#eg1 input,#eg2 input').forEach(c=>c.checked=true)}
+function selNone(){document.querySelectorAll('#eg1 input,#eg2 input,#eg3 input,#eg4 input').forEach(c=>c.checked=false)}
+function addCustom(){
+  const inp=document.getElementById('cnum'),v=+inp.value;
+  if(!v||v<1||v>9999)return;
+  if(document.querySelector(`#eg4 input[value="${v}"]`)){inp.value='';return;}
+  const l=document.createElement('label');l.className='custom-tag';
+  l.innerHTML=`<input type="checkbox" value="${v}" checked> ${v} <span class="rm" onclick="this.parentElement.remove()">x</span>`;
+  document.getElementById('eg4').appendChild(l);inp.value='';
+}
+
+function gcd(a,b){return b?gcd(b,a%b):a}
+function gcdList(a){return a.reduce((r,v)=>gcd(r,v))}
+
+function solveSmart(target,ext,ops){
+  if(target in ext) return[{op:'extract',value:target}];
+  if(ops.has('+')&&ops.has('*')){let p=solveAddMul(target,ext);if(p)return p;}
+  if(ops.has('+')){let p=solveAddOnly(target,ext);if(p)return p;}
+  if(ops.has('*')){let p=solveMulOnly(target,ext);if(p)return p;}
+  if(ops.has('+')&&ops.has('^')){let p=solveAddExp(target,ext);if(p)return p;}
+  if(ops.has('*')&&ops.has('^')){let p=solveMulExp(target,ext);if(p)return p;}
+  if(ops.has('^')){let p=solveExpOnly(target,ext);if(p)return p;}
+  return null;
+}
+
+function solveAddOnly(target,ext){
+  if(!ext.length)return null;
+  if(target in ext)return[{op:'extract',value:target}];
+  const path=[];let rem=target;const s=[...ext].sort((a,b)=>b-a);
+  while(rem>0){
+    if(rem in ext){path.push({op:'extract',value:rem});break;}
+    let used=false;
+    for(const e of s){
+      if(e<=rem){
+        if(!path.length){path.push({op:'extract',value:e});rem-=e;}
+        else{const lv=path[path.length-1].result||path[path.length-1].value;path.push({op:'+',a:lv,b:e,result:lv+e});rem-=e;}
+        used=true;break;
+      }
+    }
+    if(!used)break;
+  }
+  return rem===0&&path.length?path:null;
+}
+
+function solveAddMul(target,ext){
+  if(target in ext)return[{op:'extract',value:target}];
+  let best=null,bl=Infinity;
+  for(const b of ext){
+    if(b<=1)continue;
+    if(target%b===0){
+      const q=target/b;const sub=solveAddOnly(q,ext);
+      if(sub){const p=[...sub];const lv=p[p.length-1].result||p[p.length-1].value;p.push({op:'*',a:lv,b:b,result:lv*b});if(p.length<bl){bl=p.length;best=p;}}
+    }
+    const q=Math.floor(target/b),r=target%b;
+    if(q>0){
+      const sub=solveAddOnly(q,ext);
+      if(sub){const p=[...sub];const lv=p[p.length-1].result||p[p.length-1].value;p.push({op:'*',a:lv,b:b,result:lv*b});if(r>0){if(r in ext){const lv2=p[p.length-1].result;p.push({op:'+',a:lv2,b:r,result:lv2+r});}else continue;}if(p.length<bl){bl=p.length;best=p;}}
+    }
+  }
+  for(const e1 of ext)for(const e2 of ext){
+    const prod=e1*e2;if(prod>target)continue;const d=target-prod;
+    if(d===0){const p=[{op:'extract',value:e1},{op:'*',a:e1,b:e2,result:prod}];if(p.length<bl){bl=p.length;best=p;}}
+    else if(d in ext){const p=[{op:'extract',value:e1},{op:'*',a:e1,b:e2,result:prod},{op:'+',a:prod,b:d,result:target}];if(p.length<bl){bl=p.length;best=p;}}
+  }
+  return best;
+}
+
+function solveMulOnly(target,ext){
+  if(target in ext)return[{op:'extract',value:target}];
+  return factorize(target,ext);
+}
+function factorize(t,ext){
+  if(t in ext)return[{op:'extract',value:t}];
+  const s=[...ext].sort((a,b)=>b-a);
+  for(const e of s){
+    if(e>1&&t%e===0){const sub=factorize(t/e,ext);if(sub){const p=[...sub];const lv=p[p.length-1].result||p[p.length-1].value;p.push({op:'*',a:lv,b:e,result:lv*e});return p;}}
+  }
+  return null;
+}
+
+function solveAddExp(target,ext){
+  if(target in ext)return[{op:'extract',value:target}];
+  for(const base of ext){
+    if(base<=1)continue;
+    for(let exp=2;exp<20;exp++){
+      try{const pw=Math.pow(base,exp);if(pw>target)break;
+        if(pw===target){const p=[{op:'extract',value:base}];for(let i=0;i<exp-1;i++){const lv=p[p.length-1].result||p[p.length-1].value;p.push({op:'*',a:lv,b:base,result:lv*base});}return p;}
+        const d=target-pw;if(d>0){const sub=solveAddOnly(d,ext);if(sub){const p=[...sub];const lv=p[p.length-1].result||p[p.length-1].value;p.push({op:'+',a:lv,b:pw,result:lv+pw});return p;}}
+      }catch(e){break;}
+    }
+  }
+  return null;
+}
+function solveMulExp(target,ext){
+  if(target in ext)return[{op:'extract',value:target}];
+  for(const base of ext){
+    if(base<=1)continue;
+    for(let exp=2;exp<20;exp++){
+      try{const pw=Math.pow(base,exp);if(pw>target)break;
+        if(pw===target){const p=[{op:'extract',value:base}];for(let i=0;i<exp-1;i++){const lv=p[p.length-1].result||p[p.length-1].value;p.push({op:'*',a:lv,b:base,result:lv*base});}return p;}
+        if(target%pw===0){const sub=factorize(target/pw,ext);if(sub){const p=[...sub];const lv=p[p.length-1].result||p[p.length-1].value;p.push({op:'*',a:lv,b:pw,result:lv*pw});return p;}}
+      }catch(e){break;}
+    }
+  }
+  return null;
+}
+function solveExpOnly(target,ext){
+  if(target in ext)return[{op:'extract',value:target}];
+  for(const base of ext){if(base<=1)continue;for(const exp of ext){if(exp<=1)continue;try{if(Math.pow(base,exp)===target){const p=[{op:'extract',value:base}];for(let i=0;i<exp-1;i++){const lv=p[p.length-1].result||p[p.length-1].value;p.push({op:'*',a:lv,b:base,result:lv*base});}return p;}}catch(e){break;}}
+  return null;
+}
+
+function solveBFS(target,ext,ops,maxSteps){
+  if(target in ext)return[{op:'extract',value:target}];
+  const q=[],visited=new Set();
+  for(const n of ext){q.push([{op:'extract',value:n}]);visited.add(n);}
+  while(q.length){
+    const path=q.shift();if(path.length>maxSteps)continue;
+    const cur=path[path.length-1].result||path[path.length-1].value;
+    for(const n of ext){
+      for(const op of ops){
+        let r,np;
+        if(op==='+'){r=cur+n;if(r>0&&r<=1e12&&!visited.has(r))np=[...path,{op:'+',a:cur,b:n,result:r}];}
+        else if(op==='-'&&cur>n){r=cur-n;if(r>0&&!visited.has(r))np=[...path,{op:'-',a:cur,b:n,result:r}];}
+        else if(op==='*'){r=cur*n;if(r>0&&r<=1e12&&!visited.has(r))np=[...path,{op:'*',a:cur,b:n,result:r}];}
+        else if(op==='/'&&n>0&&cur>=n&&cur%n===0){r=cur/n;if(r>0&&!visited.has(r))np=[...path,{op:'/',a:cur,b:n,result:r}];}
+        else if(op==='^'&&n>1&&cur>1){try{r=Math.pow(cur,n);if(r>0&&r<=1e12&&!visited.has(r))np=[...path,{op:'^',a:cur,b:n,result:r}];}catch(e){}}
+        if(np){visited.add(r);if(r===target)return np;q.push(np);}
+      }
+    }
+  }
+  return null;
+}
+
+function solve(){
+  const target=+document.getElementById('target').value;
+  if(!target||target<=0)return;
+  const ext=getExt();
+  const ops=new Set([...document.querySelectorAll('#og input:checked')].map(c=>c.value));
+  if(!ext.length){document.getElementById('sarea').innerHTML='<div class="card"><div class="no-sol">Check at least one extractable number</div></div>';return;}
+  document.getElementById('sarea').innerHTML='<div class="card"><div style="color:#888">Solving...</div></div>';
+  document.getElementById('solvebtn').disabled=true;
+  setTimeout(()=>{
+    let path=solveSmart(target,ext,ops);
+    if(!path)path=solveBFS(target,ext,ops,200);
+    if(path){
+      let h='<div class="card"><h2>Solution ('+path.length+' steps)</h2><div class="sol-box">';
+      path.forEach(s=>{
+        if(s.op==='extract')h+=`<div class="step ext">Extract ${s.value}</div>`;
+        else{const m={'+':'+','-':'-',"*":'x','/':'/','^':'^'};h+=`<div class="step op">${s.a} ${m[s.op]||s.op} ${s.b} = <span class="res">${s.result}</span></div>`;}
+      });
+      h+='</div><h3>Buildings Needed</h3><div class="bld-box">';
+      const b=getBuildings(path);
+      b.ext.forEach(n=>h+=`<div class="bld-item">Extractor <span class="cnt">x${n}</span></div>`);
+      if(b.a)h+=`<div class="bld-item">Adder <span class="cnt">x${b.a}</span></div>`;
+      if(b.m)h+=`<div class="bld-item">Multiplier <span class="cnt">x${b.m}</span></div>`;
+      if(b.s)h+=`<div class="bld-item">Subtractor <span class="cnt">x${b.s}</span></div>`;
+      if(b.d)h+=`<div class="bld-item">Divider <span class="cnt">x${b.d}</span></div>`;
+      if(b.e)h+=`<div class="bld-item">Exponentiator <span class="cnt">x${b.e}</span></div>`;
+      h+='</div></div>';
+      document.getElementById('sarea').innerHTML=h;
+    }else{
+      let err='Cannot reach this number with current settings.';
+      if(!ops.has('+')&&!ops.has('*')&&!ops.has('^'))err='Enable at least Addition or Multiplication.';
+      else if(!ops.has('+')&&ops.has('*')){const g=gcdList(ext);if(g>1&&target%g!==0)err=`With only multiplication, you can only make multiples of ${g}. Target ${target} is not. Enable Addition.`;}
+      else if(ops.has('+')&&!ops.has('*')){const g=gcdList(ext);if(g>1&&target%g!==0)err=`With only addition, these numbers make multiples of ${g}. Target ${target} is not one. Enable Multiplication or add different numbers.`;}
+      document.getElementById('sarea').innerHTML=`<div class="card"><div class="no-sol">${err}</div></div>`;
+    }
+    document.getElementById('solvebtn').disabled=false;
+  },10);
+}
+function getBuildings(path){
+  const b={ext:new Set(),a:0,m:0,s:0,d:0,e:0};
+  path.forEach(s=>{if(s.op==='extract')b.ext.add(s.value);else if(s.op==='+')b.a++;else if(s.op==='*')b.m++;else if(s.op==='-')b.s++;else if(s.op==='/')b.d++;else if(s.op==='^')b.e++;});
+  b.ext=[...b.ext].sort((a,c)=>a-c);return b;
+}
+
+// === UPGRADES ===
+const UPGRADES={belt:{name:"Belt",desc:"Belt speed",levels:[{l:1,s:"1/s",r:[{n:1,c:200}]},{l:2,s:"2/s",r:[{n:1,c:1000},{n:2,c:500}]},{l:3,s:"3/s",r:[{n:2,c:4000},{n:3,c:3000},{n:4,c:1500}]},{l:4,s:"4/s",r:[{n:3,c:9000},{n:4,c:7000},{n:5,c:6000}]},{l:5,s:"5/s",r:[{n:3,c:9000},{n:4,c:7000},{n:5,c:6000}]},{l:6,s:"6/s",r:[{n:4,c:11000},{n:5,c:9000},{n:6,c:8000}]},{l:7,s:"7/s",r:[{n:5,c:15000},{n:6,c:12000},{n:7,c:10000}]},{l:8,s:"8/s",r:[{n:6,c:20000},{n:7,c:16000},{n:8,c:12000}]}]},extractor:{name:"Extractor",desc:"Belt count",levels:[{l:1,s:"1 Belt",r:[{n:1,c:300}]},{l:2,s:"2 Belts",r:[{n:2,c:2000},{n:3,c:1000}]},{l:3,s:"3 Belts",r:[{n:3,c:5000},{n:4,c:2000},{n:5,c:1000}]},{l:4,s:"4 Belts",r:[{n:4,c:8000},{n:5,c:3000},{n:6,c:2000}]},{l:5,s:"5 Belts",r:[{n:5,c:10000},{n:6,c:4000},{n:7,c:3000}]},{l:6,s:"6 Belts",r:[{n:6,c:12000},{n:7,c:8000},{n:8,c:4000}]},{l:7,s:"7 Belts",r:[{n:7,c:15000},{n:8,c:12000},{n:9,c:6000}]},{l:8,s:"8 Belts",r:[{n:8,c:20000},{n:9,c:17000},{n:10,c:20000}]}]},adder:{name:"Adder",desc:"Speed",levels:[{l:1,s:"0.25/s",r:[{n:2,c:450}]},{l:2,s:"0.333/s",r:[{n:2,c:3000},{n:3,c:1500}]},{l:3,s:"0.4/s",r:[{n:3,c:5000},{n:4,c:4000},{n:5,c:3000}]},{l:4,s:"0.5/s",r:[{n:4,c:7000},{n:5,c:5000},{n:6,c:4000}]},{l:5,s:"0.667/s",r:[{n:5,c:12000},{n:6,c:10000},{n:7,c:5000}]},{l:6,s:"1/s",r:[{n:6,c:15000},{n:7,c:12000},{n:8,c:8000}]},{l:7,s:"1.5/s",r:[{n:7,c:20000},{n:8,c:17000},{n:9,c:10000}]},{l:8,s:"2/s",r:[{n:8,c:30000},{n:9,c:20000},{n:10,c:16000}]}]},multiplier:{name:"Multiplier",desc:"Speed",levels:[{l:1,s:"0.2/s",r:[{n:4,c:500}]},{l:2,s:"0.3/s",r:[{n:4,c:5000},{n:5,c:2500}]},{l:3,s:"0.4/s",r:[{n:5,c:10000},{n:6,c:7000},{n:7,c:4000}]},{l:4,s:"0.5/s",r:[{n:6,c:11000},{n:7,c:6000},{n:8,c:5000}]},{l:5,s:"0.6/s",r:[{n:7,c:17000},{n:8,c:13000},{n:9,c:6000}]},{l:6,s:"0.7/s",r:[{n:8,c:22000},{n:9,c:17000},{n:10,c:10000}]},{l:7,s:"0.8/s",r:[{n:9,c:35000},{n:10,c:25000},{n:11,c:17000}]},{l:8,s:"1/s",r:[{n:10,c:37000},{n:11,c:30000},{n:12,c:20000}]}]},sub_div:{name:"Subtractor/Divider",desc:"Speed",levels:[{l:1,s:"0.2/s",r:[{n:6,c:1000}]},{l:2,s:"0.3/s",r:[{n:6,c:5000},{n:7,c:2500}]},{l:3,s:"0.4/s",r:[{n:7,c:10000},{n:8,c:7000},{n:9,c:4000}]},{l:4,s:"0.5/s",r:[{n:8,c:15000},{n:9,c:10000},{n:10,c:6000}]},{l:5,s:"0.6/s",r:[{n:9,c:22000},{n:10,c:15000},{n:11,c:8000}]},{l:6,s:"0.7/s",r:[{n:10,c:32000},{n:11,c:21000},{n:12,c:13000}]},{l:7,s:"0.8/s",r:[{n:11,c:43000},{n:12,c:33000},{n:13,c:26000}]},{l:8,s:"1/s",r:[{n:12,c:50000},{n:13,c:40000},{n:14,c:30000}]}]},exponentiator:{name:"Exponentiator",desc:"Speed",levels:[{l:1,s:"0.15/s",r:[{n:8,c:2000}]},{l:2,s:"0.2/s",r:[{n:8,c:10000},{n:9,c:5000}]},{l:3,s:"0.25/s",r:[{n:9,c:15000},{n:10,c:10000},{n:11,c:5000}]},{l:4,s:"0.333/s",r:[{n:10,c:22000},{n:11,c:15000},{n:12,c:8000}]},{l:5,s:"0.4/s",r:[{n:11,c:30000},{n:12,c:20000},{n:13,c:10000}]},{l:6,s:"0.5/s",r:[{n:12,c:40000},{n:13,c:28000},{n:14,c:15000}]},{l:7,s:"0.6/s",r:[{n:13,c:50000},{n:14,c:35000},{n:15,c:20000}]},{l:8,s:"0.75/s",r:[{n:14,c:60000},{n:15,c:45000},{n:16,c:25000}]}]}};
+let progress=JSON.parse(localStorage.getItem('bm_progress')||'null')||{levels:{belt:0,extractor:0,adder:0,multiplier:0,sub_div:0,exponentiator:0}};
+function saveProg(){localStorage.setItem('bm_progress',JSON.stringify(progress));}
+
+function renderUpgrades(){
+  const g=document.getElementById('ugrid');g.innerHTML='';
+  for(const[k,u]of Object.entries(UPGRADES)){
+    const lv=progress.levels[k]||0;const nxt=lv<u.levels.length?u.levels[lv]:null;
+    let h=`<div class="ucard"><div class="nm">${u.name}</div><div class="li">${u.desc} - Level ${lv}/${u.levels.length}</div>`;
+    h+=`<div class="lctl"><button onclick="chgLv('${k}',-1)">-</button><span class="cl">${lv}</span><button onclick="chgLv('${k}',1)">+</button></div>`;
+    if(nxt){h+=`<div class="req">`;nxt.r.forEach(r=>h+=`<div class="rr"><span class="rn">${r.n}</span><span class="rc">x${r.c.toLocaleString()}</span></div>`);h+=`</div>`;}
+    else h+=`<div style="color:#81c784;font-size:12px">Max level!</div>`;
+    h+=`</div>`;g.innerHTML+=h;
+  }
+  renderHub();
+}
+function chgLv(k,d){
+  const lv=progress.levels[k]||0;const max=UPGRADES[k].levels.length;
+  progress.levels[k]=Math.max(0,Math.min(max,lv+d));saveProg();renderUpgrades();
+}
+function renderHub(){
+  const g=document.getElementById('hub');g.innerHTML='';
+  const needed={};
+  for(const[k,u]of Object.entries(UPGRADES)){
+    const lv=progress.levels[k]||0;if(lv>=u.levels.length)continue;
+    u.levels[lv].r.forEach(r=>{if(!needed[r.n])needed[r.n]={c:0,for:[]};needed[r.n].c+=r.c;needed[r.n].for.push(u.name);});
+  }
+  for(const[n,info]of Object.entries(needed)){
+    g.innerHTML+=`<div class="hnum"><div class="hn">${n}</div><div><div class="hi">For: ${info.for.join(', ')}</div><div class="hr">${info.c.toLocaleString()} needed</div></div></div>`;
+  }
+  if(!Object.keys(needed).length)g.innerHTML='<div style="color:#81c784;font-size:13px">All upgrades maxed!</div>';
+}
+
+// === FACTORY PLANNER ===
+const G=30,COL={extractor:'#4fc3f7',adder:'#81c784',multiplier:'#ffb74d',subtractor:'#e57373',divider:'#ce93d8',exponentiator:'#fff176',belt:'#666',hub:'#2196f3',eraser:'#333',select:'#999'};
+const SZ={extractor:[2,2],adder:[3,3],multiplier:[3,3],subtractor:[3,3],divider:[3,3],exponentiator:[3,3],belt:[1,1],hub:[4,4]};
+let curTool='select',pState={buildings:[],belts:[],dragging:false,hovered:null};
+const canvas=document.getElementById('fc'),ctx=canvas.getContext('2d');
+
+function setTool(t){
+  curTool=t;
+  document.querySelectorAll('.pctrl .tool').forEach(x=>x.classList.toggle('active',x.dataset.t===t));
+  canvas.style.cursor=t==='select'?'default':t==='eraser'?'not-allowed':'crosshair';
+}
+function drawPlanner(){
+  ctx.fillStyle='#0a0a1a';ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.strokeStyle='#1a1a2e';ctx.lineWidth=0.5;
+  for(let x=0;x<=canvas.width;x+=G){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,canvas.height);ctx.stroke();}
+  for(let y=0;y<=canvas.height;y+=G){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(canvas.width,y);ctx.stroke();}
+  pState.belts.forEach(b=>{ctx.fillStyle='#555';ctx.fillRect(b.x*G+4,b.y*G+4,G-8,G-8);ctx.strokeStyle='#888';ctx.lineWidth=1;ctx.strokeRect(b.x*G+4,b.y*G+4,G-8,G-8);});
+  ctx.strokeStyle='#777';ctx.lineWidth=2;
+  for(let i=0;i<pState.belts.length-1;i++){const a=pState.belts[i],b=pState.belts[i+1];if(Math.abs(a.x-b.x)<=1&&Math.abs(a.y-b.y)<=1){ctx.beginPath();ctx.moveTo(a.x*G+G/2,a.y*G+G/2);ctx.lineTo(b.x*G+G/2,b.y*G+G/2);ctx.stroke();}}
+  pState.buildings.forEach(b=>{const w=SZ[b.type][0]*G,h=SZ[b.type][1]*G,x=b.x*G,y=b.y*G;ctx.fillStyle=COL[b.type]+'33';ctx.fillRect(x,y,w,h);ctx.strokeStyle=COL[b.type];ctx.lineWidth=2;ctx.strokeRect(x,y,w,h);ctx.fillStyle=COL[b.type];ctx.font='11px sans-serif';ctx.textAlign='center';ctx.fillText(b.type[0].toUpperCase()+b.type.slice(1),x+w/2,y+h/2+4);});
+  if(pState.hovered&&curTool!=='select'){const sz=SZ[curTool]||[1,1];ctx.fillStyle=COL[curTool]+'44';ctx.fillRect(pState.hovered.x*G,pState.hovered.y*G,sz[0]*G,sz[1]*G);ctx.strokeStyle=COL[curTool];ctx.lineWidth=1;ctx.setLineDash([4,4]);ctx.strokeRect(pState.hovered.x*G,pState.hovered.y*G,sz[0]*G,sz[1]*G);ctx.setLineDash([]);}
+}
+function gpos(e){const r=canvas.getBoundingClientRect();return{x:Math.floor((e.clientX-r.left)*canvas.width/r.width/G),y:Math.floor((e.clientY-r.top)*canvas.height/r.height/G)};}
+function canPlace(x,y,t){const s=SZ[t]||[1,1];for(let dx=0;dx<s[0];dx++)for(let dy=0;dy<s[1];dy++){const cx=x+dx,cy=y+dy;if(cx<0||cy<0||cx>=canvas.width/G||cy>=canvas.height/G)return false;for(const b of pState.buildings){const bs=SZ[b.type]||[1,1];if(cx>=b.x&&cx<b.x+bs[0]&&cy>=b.y&&cy<b.y+bs[1])return false;}}return true;}
+function eraseAt(x,y){pState.buildings=pState.buildings.filter(b=>{const s=SZ[b.type]||[1,1];return!(x>=b.x&&x<b.x+s[0]&&y>=b.y&&y<b.y+s[1]);});pState.belts=pState.belts.filter(b=>!(b.x===x&&b.y===y));}
+
+canvas.addEventListener('mousemove',e=>{const p=gpos(e);pState.hovered=p;drawPlanner();if(pState.dragging&&curTool==='belt'){const l=pState.belts[pState.belts.length-1];if(l&&(p.x!==l.x||p.y!==l.y)){const dx=Math.sign(p.x-l.x),dy=Math.sign(p.y-l.y);if((dx!==0)!==(dy!==0)){const nx=l.x+dx,ny=l.y+dy;if(!pState.belts.find(b=>b.x===nx&&b.y===ny)){pState.belts.push({x:nx,y:ny});drawPlanner();}}}}});
+canvas.addEventListener('mousedown',e=>{const p=gpos(e);if(e.button===2||curTool==='eraser'){e.preventDefault();eraseAt(p.x,p.y);drawPlanner();return;}if(curTool==='select')return;if(curTool==='belt'){pState.dragging=true;pState.belts.push({x:p.x,y:p.y});drawPlanner();return;}if(canPlace(p.x,p.y,curTool)){pState.buildings.push({x:p.x,y:p.y,type:curTool});drawPlanner();}});
+canvas.addEventListener('mouseup',()=>{pState.dragging=false;});
+canvas.addEventListener('mouseleave',()=>{pState.hovered=null;pState.dragging=false;drawPlanner();});
+canvas.addEventListener('contextmenu',e=>e.preventDefault());
+function clearPlanner(){pState.buildings=[];pState.belts=[];drawPlanner();}
+function exportLayout(){const j=JSON.stringify(pState,null,2);const b=new Blob([j],{type:'application/json'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download='beltmatic_layout.json';a.click();URL.revokeObjectURL(u);}
+function importLayout(){const i=document.createElement('input');i.type='file';i.accept='.json';i.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{try{const d=JSON.parse(ev.target.result);if(d.buildings)pState.buildings=d.buildings;if(d.belts)pState.belts=d.belts;drawPlanner();}catch(e){alert('Invalid file');}};r.readAsText(f);};i.click();}
+function loadTpl(n){clearPlanner();if(n==='ac'){pState.buildings=[{x:1,y:5,type:'extractor'},{x:1,y:8,type:'extractor'},{x:8,y:5,type:'adder'},{x:14,y:8,type:'hub'}];pState.belts=[{x:3,y:6},{x:4,y:6},{x:5,y:6},{x:6,y:6},{x:7,y:6},{x:3,y:9},{x:4,y:9},{x:5,y:9},{x:6,y:9},{x:7,y:9},{x:11,y:7},{x:12,y:7},{x:13,y:7}];}else if(n==='ml'){pState.buildings=[{x:1,y:5,type:'extractor'},{x:1,y:9,type:'extractor'},{x:8,y:5,type:'multiplier'},{x:14,y:8,type:'hub'}];pState.belts=[{x:3,y:6},{x:4,y:6},{x:5,y:6},{x:6,y:6},{x:7,y:6},{x:3,y:10},{x:4,y:10},{x:5,y:10},{x:6,y:10},{x:7,y:10},{x:11,y:7},{x:12,y:7},{x:13,y:7}];}else if(n==='ex'){pState.buildings=[{x:1,y:5,type:'extractor'},{x:1,y:9,type:'extractor'},{x:8,y:5,type:'exponentiator'},{x:14,y:8,type:'hub'}];pState.belts=[{x:3,y:6},{x:4,y:6},{x:5,y:6},{x:6,y:6},{x:7,y:6},{x:3,y:10},{x:4,y:10},{x:5,y:10},{x:6,y:10},{x:7,y:10},{x:11,y:7},{x:12,y:7},{x:13,y:7}];}drawPlanner();}
+
+// === INIT ===
+renderUpgrades();
+document.getElementById('target').addEventListener('keydown',e=>{if(e.key==='Enter')solve();});
+document.getElementById('cnum').addEventListener('keydown',e=>{if(e.key==='Enter')addCustom();});
+</script>
+</body>
+</html>

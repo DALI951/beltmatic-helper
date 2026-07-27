@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Beltmatic Helper</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #1a1a2e;
+  color: #e0e0e0;
+  min-height: 100vh;
+}
+
+.header {
+  background: linear-gradient(135deg, #16213e 0%, #0f3460 100%);
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 2px solid #e94560;
+}
+
+.header h1 {
+  font-size: 22px;
+  color: #e94560;
+  font-weight: 700;
+}
+
+.header .subtitle {
+  font-size: 13px;
+  color: #888;
+}
+
+.tabs {
+  display: flex;
+  background: #16213e;
+  border-bottom: 1px solid #333;
+}
+
+.tab {
+  padding: 12px 24px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  color: #888;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+}
+
+.tab:hover { color: #ccc; }
+.tab.active { color: #e94560; border-bottom-color: #e94560; }
+
+.tab-content { display: none; padding: 24px; max-width: 1200px; margin: 0 auto; }
+.tab-content.active { display: block; }
+
+.card {
+  background: #16213e;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 16px;
+  border: 1px solid #333;
+}
+
+.card h2 {
+  font-size: 16px;
+  color: #e94560;
+  margin-bottom: 12px;
+}
+
+.card h3 {
+  font-size: 14px;
+  color: #aaa;
+  margin-bottom: 8px;
+  margin-top: 12px;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  color: #aaa;
+  margin-bottom: 4px;
+}
+
+input[type="number"], input[type="text"] {
+  background: #0f3460;
+  border: 1px solid #444;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 200px;
+  outline: none;
+}
+
+input:focus { border-color: #e94560; }
+
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.checkbox-group label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #0f3460;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #ccc;
+  border: 1px solid #333;
+  transition: all 0.2s;
+}
+
+.checkbox-group label:hover { border-color: #e94560; }
+.checkbox-group input[type="checkbox"] { accent-color: #e94560; }
+
+.extract-section { margin-top: 8px; }
+.extract-group { margin-bottom: 10px; }
+.extract-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+.unlock {
+  font-size: 10px;
+  color: #555;
+  margin-left: 2px;
+}
+.custom-num-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+.btn-small {
+  padding: 5px 10px;
+  border-radius: 4px;
+  border: 1px solid #555;
+  background: #16213e;
+  color: #ccc;
+  font-size: 11px;
+  cursor: pointer;
+}
+.btn-small:hover { border-color: #e94560; color: #fff; }
+.btn-small.btn-secondary { background: #0f3460; }
+.custom-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #0f3460;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #4fc3f7;
+  border: 1px solid #333;
+}
+.custom-tag .remove {
+  cursor: pointer;
+  color: #e94560;
+  font-weight: 700;
+  margin-left: 2px;
+}
+.custom-tag .remove:hover { color: #ff6b81; }
+
+.btn {
+  background: #e94560;
+  color: #fff;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 12px;
+}
+
+.btn:hover { background: #c73e54; }
+.btn:disabled { background: #555; cursor: not-allowed; }
+
+.btn-secondary {
+  background: #333;
+  border: 1px solid #555;
+}
+.btn-secondary:hover { background: #444; }
+
+.solution-box {
+  background: #0a0a1a;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 16px;
+  margin-top: 12px;
+  font-family: 'Consolas', 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.8;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.solution-box .step {
+  padding: 4px 0;
+  border-bottom: 1px solid #1a1a2e;
+}
+
+.solution-box .step:last-child { border-bottom: none; }
+.solution-box .extract { color: #4fc3f7; }
+.solution-box .operation { color: #81c784; }
+.solution-box .result { color: #e94560; font-weight: 700; }
+
+.buildings-box {
+  background: #0a0a1a;
+  border: 1px solid #333;
+  border-radius: 6px;
+  padding: 16px;
+  margin-top: 12px;
+}
+
+.building-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #16213e;
+  padding: 6px 12px;
+  border-radius: 4px;
+  margin: 4px;
+  font-size: 13px;
+}
+
+.building-item .icon { font-size: 16px; }
+.building-item .count { color: #e94560; font-weight: 700; }
+
+.upgrade-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 12px;
+}
+
+.upgrade-card {
+  background: #0f3460;
+  border-radius: 6px;
+  padding: 14px;
+  border: 1px solid #333;
+}
+
+.upgrade-card .name {
+  font-weight: 700;
+  font-size: 14px;
+  color: #4fc3f7;
+  margin-bottom: 4px;
+}
+
+.upgrade-card .level-info {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 8px;
+}
+
+.level-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.level-control button {
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  border: 1px solid #555;
+  background: #1a1a2e;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.level-control button:hover { background: #e94560; border-color: #e94560; }
+.level-control .current-level { font-size: 18px; font-weight: 700; color: #e94560; min-width: 30px; text-align: center; }
+
+.requirements {
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.req-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 0;
+}
+
+.req-row .num { color: #4fc3f7; font-weight: 700; min-width: 40px; }
+.req-row .count { color: #888; }
+.req-row .done { color: #81c784; }
+
+.hub-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 8px;
+}
+
+.hub-num {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #0f3460;
+  padding: 10px 14px;
+  border-radius: 6px;
+}
+
+.hub-num .number { font-size: 18px; font-weight: 700; color: #4fc3f7; }
+.hub-num .info { font-size: 12px; color: #888; }
+.hub-num .remaining { color: #e94560; font-weight: 600; }
+
+.level-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 0;
+  border-bottom: 1px solid #1a1a2e;
+  font-size: 13px;
+}
+
+.level-row .lv { color: #e94560; font-weight: 700; min-width: 60px; }
+.level-row .target { color: #4fc3f7; font-weight: 600; min-width: 80px; }
+.level-row .count { color: #888; min-width: 60px; }
+.level-row .reward { color: #81c784; font-size: 12px; }
+
+.planner-controls {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.planner-controls .tool {
+  padding: 8px 14px;
+  border-radius: 4px;
+  border: 2px solid #333;
+  background: #16213e;
+  color: #ccc;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.planner-controls .tool:hover { border-color: #e94560; }
+.planner-controls .tool.active { border-color: #e94560; background: #e94560; color: #fff; }
+
+.planner-canvas-wrap {
+  background: #0a0a1a;
+  border: 1px solid #333;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+canvas#planner {
+  display: block;
+  cursor: crosshair;
+  width: 100%;
+  background: #0a0a1a;
+}
+
+.loading {
+  color: #888;
+  font-style: italic;
+  padding: 12px;
+}
+
+.no-solution {
+  color: #ffb74d;
+  padding: 14px;
+  font-size: 14px;
+  line-height: 1.6;
+  background: #2a1a0a;
+  border: 1px solid #553300;
+  border-radius: 6px;
+}
+
+.template-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.template-btn {
+  padding: 6px 12px;
+  background: #16213e;
+  border: 1px solid #444;
+  border-radius: 4px;
+  color: #ccc;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.template-btn:hover { border-color: #e94560; color: #fff; }
+
+.save-load {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0a1a; }
+::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Beltmatic Helper</h1>
+  <span class="subtitle">Your factory automation companion</span>
+</div>
+
+<div class="tabs">
+  <div class="tab active" data-tab="solver">Number Solver</div>
+  <div class="tab" data-tab="upgrades">Upgrade Tracker</div>
+  <div class="tab" data-tab="planner">Factory Planner</div>
+</div>
+
+<div id="solver" class="tab-content active">
+  <div class="card">
+    <h2>Solve a Number</h2>
+    <label>Target number to produce</label>
+    <input type="number" id="target" min="1" max="999999" value="75" style="width: 200px;">
+
+    <h3>Extractable Numbers</h3>
+    <p style="font-size: 12px; color: #666; margin-bottom: 8px;">Check which numbers you can extract from the map</p>
+
+    <div class="extract-section">
+      <div class="extract-group">
+        <div class="extract-label">Early Game (Levels 1-9)</div>
+        <div class="checkbox-group" id="extract-group-early">
+          <label><input type="checkbox" value="1" checked> 1 <span class="unlock">Lv1</span></label>
+          <label><input type="checkbox" value="2" checked> 2 <span class="unlock">Lv3</span></label>
+          <label><input type="checkbox" value="3" checked> 3 <span class="unlock">Lv5</span></label>
+          <label><input type="checkbox" value="4" checked> 4 <span class="unlock">Lv6</span></label>
+          <label><input type="checkbox" value="5" checked> 5 <span class="unlock">Lv8</span></label>
+        </div>
+      </div>
+
+      <div class="extract-group">
+        <div class="extract-label">Mid Game (Levels 9-14)</div>
+        <div class="checkbox-group" id="extract-group-mid">
+          <label><input type="checkbox" value="6"> 6 <span class="unlock">Lv9</span></label>
+          <label><input type="checkbox" value="7"> 7 <span class="unlock">Lv11</span></label>
+          <label><input type="checkbox" value="8"> 8 <span class="unlock">Lv12</span></label>
+          <label><input type="checkbox" value="9"> 9 <span class="unlock">Lv14</span></label>
+        </div>
+      </div>
+
+      <div class="extract-group">
+        <div class="extract-label">Late Game (Levels 15+)</div>
+        <div class="checkbox-group" id="extract-group-late">
+          <label><input type="checkbox" value="10"> 10 <span class="unlock">Lv15</span></label>
+          <label><input type="checkbox" value="11"> 11 <span class="unlock">Lv15</span></label>
+          <label><input type="checkbox" value="12"> 12 <span class="unlock">Lv17</span></label>
+          <label><input type="checkbox" value="13"> 13 <span class="unlock">Lv18</span></label>
+          <label><input type="checkbox" value="14"> 14 <span class="unlock">Lv20</span></label>
+          <label><input type="checkbox" value="15"> 15 <span class="unlock">Lv21</span></label>
+        </div>
+      </div>
+
+      <div class="extract-group">
+        <div class="extract-label">Custom Numbers</div>
+        <div class="custom-num-row">
+          <input type="number" id="custom-num" min="1" max="999" placeholder="Add number..." style="width:120px;">
+          <button class="btn-small" onclick="addCustomNumber()">+ Add</button>
+          <button class="btn-small btn-secondary" onclick="selectAllNumbers()">All 1-9</button>
+          <button class="btn-small btn-secondary" onclick="selectNoneNumbers()">None</button>
+        </div>
+        <div class="checkbox-group" id="extract-group-custom"></div>
+      </div>
+    </div>
+
+    <h3>Operations Unlocked</h3>
+    <div class="checkbox-group" id="operations-group">
+      <label><input type="checkbox" value="+" checked> Addition (+)</label>
+      <label><input type="checkbox" value="*" checked> Multiplication (*)</label>
+      <label><input type="checkbox" value="-"> Subtraction (-)</label>
+      <label><input type="checkbox" value="/"> Division (/)</label>
+      <label><input type="checkbox" value="^"> Exponentiation (^)</label>
+    </div>
+
+    <button class="btn" id="solve-btn" onclick="solveNumber()">Solve</button>
+  </div>
+
+  <div id="solution-area"></div>
+</div>
+
+<div id="upgrades" class="tab-content">
+  <div class="card">
+    <h2>Upgrade Tracker</h2>
+    <p style="font-size: 13px; color: #888; margin-bottom: 12px;">
+      Track your current upgrade levels. Your progress is saved automatically.
+    </p>
+    <div id="upgrade-grid" class="upgrade-grid"></div>
+  </div>
+
+  <div class="card">
+    <h2>Numbers Needed at Hub</h2>
+    <p style="font-size: 13px; color: #888; margin-bottom: 12px;">
+      All numbers you still need to deliver for your next upgrades.
+    </p>
+    <div id="hub-status" class="hub-grid"></div>
+  </div>
+</div>
+
+<div id="planner" class="tab-content">
+  <div class="card">
+    <h2>Factory Planner</h2>
+    <p style="font-size: 13px; color: #888; margin-bottom: 12px;">
+      Click to place buildings, drag to draw belts. Right-click to erase.
+    </p>
+
+    <div class="planner-controls">
+      <div class="tool active" data-tool="select" onclick="setTool('select')">Select</div>
+      <div class="tool" data-tool="extractor" onclick="setTool('extractor')">Extractor</div>
+      <div class="tool" data-tool="adder" onclick="setTool('adder')">Adder</div>
+      <div class="tool" data-tool="multiplier" onclick="setTool('multiplier')">Multiplier</div>
+      <div class="tool" data-tool="subtractor" onclick="setTool('subtractor')">Subtractor</div>
+      <div class="tool" data-tool="divider" onclick="setTool('divider')">Divider</div>
+      <div class="tool" data-tool="exponentiator" onclick="setTool('exponentiator')">Exponentiator</div>
+      <div class="tool" data-tool="belt" onclick="setTool('belt')">Belt</div>
+      <div class="tool" data-tool="hub" onclick="setTool('hub')">Hub</div>
+      <div class="tool" data-tool="eraser" onclick="setTool('eraser')">Eraser</div>
+    </div>
+
+    <div class="template-list">
+      <span style="font-size: 12px; color: #888; align-self: center;">Templates:</span>
+      <div class="template-btn" onclick="loadTemplate('adder_chain')">Adder Chain (1+1=2)</div>
+      <div class="template-btn" onclick="loadTemplate('multiplier_basic')">Multiplier (2*3=6)</div>
+      <div class="template-btn" onclick="loadTemplate('exponent_basic')">Exponent (2^3=8)</div>
+    </div>
+
+    <div class="planner-canvas-wrap">
+      <canvas id="factory-canvas" width="900" height="600"></canvas>
+    </div>
+
+    <div class="save-load">
+      <button class="btn btn-secondary" onclick="clearPlanner()">Clear</button>
+      <button class="btn btn-secondary" onclick="exportLayout()">Export JSON</button>
+      <button class="btn btn-secondary" onclick="importLayout()">Import JSON</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Tab switching
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.tab).classList.add('active');
+    if (tab.dataset.tab === 'planner') {
+      setTimeout(() => { drawPlanner(); }, 50);
+    }
+  });
+});
+
+// ==================== SOLVER ====================
+function getExtractableNumbers() {
+  const nums = new Set();
+  document.querySelectorAll('#extract-group-early input:checked, #extract-group-mid input:checked, #extract-group-late input:checked, #extract-group-custom input:checked').forEach(cb => {
+    nums.add(parseInt(cb.value));
+  });
+  return [...nums].sort((a, b) => a - b);
+}
+
+function selectAllNumbers() {
+  document.querySelectorAll('#extract-group-early input, #extract-group-mid input').forEach(cb => cb.checked = true);
+}
+
+function selectNoneNumbers() {
+  document.querySelectorAll('#extract-group-early input, #extract-group-mid input, #extract-group-late input, #extract-group-custom input').forEach(cb => cb.checked = false);
+}
+
+function addCustomNumber() {
+  const input = document.getElementById('custom-num');
+  const val = parseInt(input.value);
+  if (!val || val < 1 || val > 999) return;
+  const existing = document.querySelector(`#extract-group-custom input[value="${val}"]`);
+  if (existing) { existing.checked = true; input.value = ''; return; }
+
+  const container = document.getElementById('extract-group-custom');
+  const label = document.createElement('label');
+  label.className = 'custom-tag';
+  label.innerHTML = `<input type="checkbox" value="${val}" checked> ${val} <span class="remove" onclick="removeCustom(this, ${val})">x</span>`;
+  container.appendChild(label);
+  input.value = '';
+}
+
+function removeCustom(el, val) {
+  el.parentElement.remove();
+}
+
+async function solveNumber() {
+  const target = parseInt(document.getElementById('target').value);
+  if (!target || target <= 0) return;
+
+  const extractable = getExtractableNumbers();
+  const operations = [...document.querySelectorAll('#operations-group input:checked')]
+    .map(cb => cb.value);
+
+  if (extractable.length === 0) {
+    document.getElementById('solution-area').innerHTML =
+      '<div class="card"><div class="no-solution">Check at least one extractable number on the left</div></div>';
+    return;
+  }
+
+  document.getElementById('solution-area').innerHTML =
+    '<div class="card"><div class="loading">Solving...</div></div>';
+  document.getElementById('solve-btn').disabled = true;
+
+  try {
+    const resp = await fetch('/api/solve', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ target, extractable, operations })
+    });
+    const data = await resp.json();
+
+    if (data.found) {
+      let html = '<div class="card"><h2>Solution (' + data.length + ' steps)</h2>';
+      html += '<div class="solution-box">';
+      data.steps.forEach((step, i) => {
+        if (step.includes('Extract')) {
+          html += '<div class="step extract">' + step + '</div>';
+        } else {
+          const parts = step.split('=');
+          html += '<div class="step operation">' + parts[0].trim() +
+                  ' = <span class="result">' + parts[1].trim() + '</span></div>';
+        }
+      });
+      html += '</div>';
+
+      const b = data.buildings;
+      html += '<h3>Buildings Needed</h3><div class="buildings-box">';
+      b.extractors.forEach(n => {
+        html += '<div class="building-item"><span class="icon">&#9881;</span> Extractor <span class="count">x' + n + '</span></div>';
+      });
+      if (b.adders > 0) html += '<div class="building-item"><span class="icon">+</span> Adder <span class="count">x' + b.adders + '</span></div>';
+      if (b.multipliers > 0) html += '<div class="building-item"><span class="icon">*</span> Multiplier <span class="count">x' + b.multipliers + '</span></div>';
+      if (b.subtractors > 0) html += '<div class="building-item"><span class="icon">-</span> Subtractor <span class="count">x' + b.subtractors + '</span></div>';
+      if (b.dividers > 0) html += '<div class="building-item"><span class="icon">/</span> Divider <span class="count">x' + b.dividers + '</span></div>';
+      if (b.exponentiators > 0) html += '<div class="building-item"><span class="icon">^</span> Exponentiator <span class="count">x' + b.exponentiators + '</span></div>';
+      html += '</div></div>';
+
+      document.getElementById('solution-area').innerHTML = html;
+    } else {
+      document.getElementById('solution-area').innerHTML =
+        '<div class="card"><div class="no-solution">' + (data.error || 'No solution found') + '</div></div>';
+    }
+  } catch (e) {
+    document.getElementById('solution-area').innerHTML =
+      '<div class="card"><div class="no-solution">Could not connect to server. Make sure you ran <b>python app.py</b> or <b>run.bat</b> first, then use <b>http://127.0.0.1:5000</b> in your browser.</div></div>';
+  }
+  document.getElementById('solve-btn').disabled = false;
+}
+
+// ==================== UPGRADES ====================
+let upgradeData = null;
+
+async function loadUpgrades() {
+  const resp = await fetch('/api/upgrades');
+  upgradeData = await resp.json();
+  renderUpgrades();
+  loadHubStatus();
+}
+
+function renderUpgrades() {
+  const grid = document.getElementById('upgrade-grid');
+  grid.innerHTML = '';
+  for (const [key, info] of Object.entries(upgradeData)) {
+    const card = document.createElement('div');
+    card.className = 'upgrade-card';
+    card.innerHTML = `
+      <div class="name">${info.name}</div>
+      <div class="level-info">${info.description}</div>
+      <div class="level-control">
+        <button onclick="changeLevel('${key}', -1)">-</button>
+        <span class="current-level">${info.current_level}</span>
+        <span style="color:#888">/ ${info.max_level}</span>
+        <button onclick="changeLevel('${key}', 1)">+</button>
+      </div>
+      ${info.next_upgrade ? renderRequirements(info.next_upgrade.requirements) : '<div style="color:#81c784;font-size:12px;">Max level!</div>'}
+    `;
+    grid.appendChild(card);
+  }
+}
+
+function renderRequirements(reqs) {
+  return '<div class="requirements">' +
+    reqs.map(r => `<div class="req-row"><span class="num">${r.number}</span><span class="count">x${r.count.toLocaleString()}</span></div>`).join('') +
+    '</div>';
+}
+
+async function changeLevel(key, delta) {
+  const progress = await (await fetch('/api/progress')).json();
+  const current = progress.upgrade_levels[key] || 0;
+  const max = upgradeData[key].max_level;
+  const newLevel = Math.max(0, Math.min(max, current + delta));
+  progress.upgrade_levels[key] = newLevel;
+  await fetch('/api/progress', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(progress)
+  });
+  upgradeData[key].current_level = newLevel;
+  if (newLevel < upgradeData[key].all_levels.length) {
+    upgradeData[key].next_upgrade = upgradeData[key].all_levels[newLevel];
+  } else {
+    upgradeData[key].next_upgrade = null;
+  }
+  renderUpgrades();
+  loadHubStatus();
+}
+
+async function loadHubStatus() {
+  const resp = await fetch('/api/hub');
+  const data = await resp.json();
+  const grid = document.getElementById('hub-status');
+  grid.innerHTML = '';
+  for (const [num, info] of Object.entries(data)) {
+    const div = document.createElement('div');
+    div.className = 'hub-num';
+    div.innerHTML = `
+      <div class="number">${num}</div>
+      <div>
+        <div class="info">For: ${info.used_for.join(', ')}</div>
+        <div class="remaining">${info.remaining.toLocaleString()} remaining</div>
+      </div>
+    `;
+    grid.appendChild(div);
+  }
+  if (Object.keys(data).length === 0) {
+    grid.innerHTML = '<div style="color:#81c784;font-size:13px;">All upgrades maxed or no requirements!</div>';
+  }
+}
+
+// ==================== FACTORY PLANNER ====================
+const GRID = 30;
+const COLORS = {
+  extractor: '#4fc3f7',
+  adder: '#81c784',
+  multiplier: '#ffb74d',
+  subtractor: '#e57373',
+  divider: '#ce93d8',
+  exponentiator: '#fff176',
+  belt: '#666',
+  hub: '#2196f3',
+  eraser: '#333',
+  select: '#999'
+};
+
+const SIZES = {
+  extractor: [2, 2],
+  adder: [3, 3],
+  multiplier: [3, 3],
+  subtractor: [3, 3],
+  divider: [3, 3],
+  exponentiator: [3, 3],
+  belt: [1, 1],
+  hub: [4, 4]
+};
+
+let currentTool = 'select';
+let plannerState = {
+  buildings: [],
+  belts: [],
+  dragging: false,
+  dragStart: null,
+  hovered: null
+};
+
+function setTool(tool) {
+  currentTool = tool;
+  document.querySelectorAll('.planner-controls .tool').forEach(t => {
+    t.classList.toggle('active', t.dataset.tool === tool);
+  });
+  canvas.style.cursor = tool === 'select' ? 'default' : tool === 'eraser' ? 'not-allowed' : 'crosshair';
+}
+
+const canvas = document.getElementById('factory-canvas');
+const ctx = canvas.getContext('2d');
+
+function drawPlanner() {
+  ctx.fillStyle = '#0a0a1a';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Grid
+  ctx.strokeStyle = '#1a1a2e';
+  ctx.lineWidth = 0.5;
+  for (let x = 0; x <= canvas.width; x += GRID) {
+    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
+  }
+  for (let y = 0; y <= canvas.height; y += GRID) {
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+  }
+
+  // Belts
+  plannerState.belts.forEach(belt => {
+    ctx.fillStyle = '#555';
+    ctx.fillRect(belt.x * GRID + 4, belt.y * GRID + 4, GRID - 8, GRID - 8);
+    ctx.strokeStyle = '#888';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(belt.x * GRID + 4, belt.y * GRID + 4, GRID - 8, GRID - 8);
+  });
+
+  // Belt connections (arrows)
+  ctx.strokeStyle = '#777';
+  ctx.lineWidth = 2;
+  for (let i = 0; i < plannerState.belts.length - 1; i++) {
+    const a = plannerState.belts[i];
+    const b = plannerState.belts[i + 1];
+    if (Math.abs(a.x - b.x) <= 1 && Math.abs(a.y - b.y) <= 1) {
+      ctx.beginPath();
+      ctx.moveTo(a.x * GRID + GRID / 2, a.y * GRID + GRID / 2);
+      ctx.lineTo(b.x * GRID + GRID / 2, b.y * GRID + GRID / 2);
+      ctx.stroke();
+    }
+  }
+
+  // Buildings
+  plannerState.buildings.forEach(b => {
+    const w = SIZES[b.type][0] * GRID;
+    const h = SIZES[b.type][1] * GRID;
+    const x = b.x * GRID;
+    const y = b.y * GRID;
+
+    ctx.fillStyle = COLORS[b.type] + '33';
+    ctx.fillRect(x, y, w, h);
+    ctx.strokeStyle = COLORS[b.type];
+    ctx.lineWidth = 2;
+    ctx.strokeRect(x, y, w, h);
+
+    ctx.fillStyle = COLORS[b.type];
+    ctx.font = '12px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(b.type.charAt(0).toUpperCase() + b.type.slice(1), x + w / 2, y + h / 2 + 4);
+  });
+
+  // Hover highlight
+  if (plannerState.hovered && currentTool !== 'select') {
+    const size = SIZES[currentTool] || [1, 1];
+    const w = size[0] * GRID;
+    const h = size[1] * GRID;
+    ctx.fillStyle = COLORS[currentTool] + '44';
+    ctx.fillRect(plannerState.hovered.x * GRID, plannerState.hovered.y * GRID, w, h);
+    ctx.strokeStyle = COLORS[currentTool];
+    ctx.lineWidth = 1;
+    ctx.setLineDash([4, 4]);
+    ctx.strokeRect(plannerState.hovered.x * GRID, plannerState.hovered.y * GRID, w, h);
+    ctx.setLineDash([]);
+  }
+}
+
+function getGridPos(e) {
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = canvas.width / rect.width;
+  const scaleY = canvas.height / rect.height;
+  return {
+    x: Math.floor((e.clientX - rect.left) * scaleX / GRID),
+    y: Math.floor((e.clientY - rect.top) * scaleY / GRID)
+  };
+}
+
+function canPlace(x, y, type) {
+  const size = SIZES[type] || [1, 1];
+  for (let dx = 0; dx < size[0]; dx++) {
+    for (let dy = 0; dy < size[1]; dy++) {
+      const checkX = x + dx;
+      const checkY = y + dy;
+      if (checkX < 0 || checkY < 0 || checkX >= canvas.width / GRID || checkY >= canvas.height / GRID) return false;
+      for (const b of plannerState.buildings) {
+        const bs = SIZES[b.type] || [1, 1];
+        if (checkX >= b.x && checkX < b.x + bs[0] && checkY >= b.y && checkY < b.y + bs[1]) return false;
+      }
+    }
+  }
+  return true;
+}
+
+function eraseAt(x, y) {
+  plannerState.buildings = plannerState.buildings.filter(b => {
+    const s = SIZES[b.type] || [1, 1];
+    return !(x >= b.x && x < b.x + s[0] && y >= b.y && y < b.y + s[1]);
+  });
+  plannerState.belts = plannerState.belts.filter(b => !(b.x === x && b.y === y));
+}
+
+canvas.addEventListener('mousemove', (e) => {
+  const pos = getGridPos(e);
+  plannerState.hovered = pos;
+  drawPlanner();
+
+  if (plannerState.dragging && currentTool === 'belt') {
+    const last = plannerState.belts[plannerState.belts.length - 1];
+    if (last && (pos.x !== last.x || pos.y !== last.y)) {
+      const dx = Math.sign(pos.x - last.x);
+      const dy = Math.sign(pos.y - last.y);
+      if ((dx !== 0) !== (dy !== 0)) {
+        const nx = last.x + dx;
+        const ny = last.y + dy;
+        if (!plannerState.belts.find(b => b.x === nx && b.y === ny)) {
+          plannerState.belts.push({ x: nx, y: ny });
+          drawPlanner();
+        }
+      }
+    }
+  }
+});
+
+canvas.addEventListener('mousedown', (e) => {
+  const pos = getGridPos(e);
+
+  if (e.button === 2 || currentTool === 'eraser') {
+    e.preventDefault();
+    eraseAt(pos.x, pos.y);
+    drawPlanner();
+    return;
+  }
+
+  if (currentTool === 'select') return;
+
+  if (currentTool === 'belt') {
+    plannerState.dragging = true;
+    plannerState.belts.push({ x: pos.x, y: pos.y });
+    drawPlanner();
+    return;
+  }
+
+  const type = currentTool;
+  if (canPlace(pos.x, pos.y, type)) {
+    plannerState.buildings.push({ x: pos.x, y: pos.y, type });
+    drawPlanner();
+  }
+});
+
+canvas.addEventListener('mouseup', () => {
+  plannerState.dragging = false;
+});
+
+canvas.addEventListener('mouseleave', () => {
+  plannerState.hovered = null;
+  plannerState.dragging = false;
+  drawPlanner();
+});
+
+canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+
+function clearPlanner() {
+  plannerState.buildings = [];
+  plannerState.belts = [];
+  drawPlanner();
+}
+
+function exportLayout() {
+  const json = JSON.stringify(plannerState, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'beltmatic_layout.json';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importLayout() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  input.onchange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      try {
+        const data = JSON.parse(ev.target.result);
+        if (data.buildings) plannerState.buildings = data.buildings;
+        if (data.belts) plannerState.belts = data.belts;
+        drawPlanner();
+      } catch (err) {
+        alert('Invalid layout file');
+      }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
+// Templates
+function loadTemplate(name) {
+  clearPlanner();
+  if (name === 'adder_chain') {
+    plannerState.buildings = [
+      { x: 1, y: 5, type: 'extractor' },
+      { x: 1, y: 8, type: 'extractor' },
+      { x: 8, y: 5, type: 'adder' },
+      { x: 14, y: 8, type: 'hub' }
+    ];
+    plannerState.belts = [
+      { x: 3, y: 6 }, { x: 4, y: 6 }, { x: 5, y: 6 }, { x: 6, y: 6 }, { x: 7, y: 6 },
+      { x: 3, y: 9 }, { x: 4, y: 9 }, { x: 5, y: 9 }, { x: 6, y: 9 }, { x: 7, y: 9 },
+      { x: 11, y: 7 }, { x: 12, y: 7 }, { x: 13, y: 7 }
+    ];
+  } else if (name === 'multiplier_basic') {
+    plannerState.buildings = [
+      { x: 1, y: 5, type: 'extractor' },
+      { x: 1, y: 9, type: 'extractor' },
+      { x: 8, y: 5, type: 'multiplier' },
+      { x: 14, y: 8, type: 'hub' }
+    ];
+    plannerState.belts = [
+      { x: 3, y: 6 }, { x: 4, y: 6 }, { x: 5, y: 6 }, { x: 6, y: 6 }, { x: 7, y: 6 },
+      { x: 3, y: 10 }, { x: 4, y: 10 }, { x: 5, y: 10 }, { x: 6, y: 10 }, { x: 7, y: 10 },
+      { x: 11, y: 7 }, { x: 12, y: 7 }, { x: 13, y: 7 }
+    ];
+  } else if (name === 'exponent_basic') {
+    plannerState.buildings = [
+      { x: 1, y: 5, type: 'extractor' },
+      { x: 1, y: 9, type: 'extractor' },
+      { x: 8, y: 5, type: 'exponentiator' },
+      { x: 14, y: 8, type: 'hub' }
+    ];
+    plannerState.belts = [
+      { x: 3, y: 6 }, { x: 4, y: 6 }, { x: 5, y: 6 }, { x: 6, y: 6 }, { x: 7, y: 6 },
+      { x: 3, y: 10 }, { x: 4, y: 10 }, { x: 5, y: 10 }, { x: 6, y: 10 }, { x: 7, y: 10 },
+      { x: 11, y: 7 }, { x: 12, y: 7 }, { x: 13, y: 7 }
+    ];
+  }
+  drawPlanner();
+}
+
+// Init
+loadUpgrades();
+document.getElementById('target').addEventListener('keydown', (e) => { if (e.key === 'Enter') solveNumber(); });
+document.getElementById('custom-num').addEventListener('keydown', (e) => { if (e.key === 'Enter') addCustomNumber(); });
+</script>
+</body>
+</html>
