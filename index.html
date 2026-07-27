@@ -67,11 +67,11 @@ input:focus{border-color:#e94560}
 .hnum .hr{color:#e94560;font-weight:600}
 .no-sol{color:#ffb74d;padding:14px;font-size:14px;line-height:1.6;background:#2a1a0a;border:1px solid #553300;border-radius:6px}
 .pctrl{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
-.tool{padding:7px 12px;border-radius:6px;border:2px solid #4a7c2e;background:#5a8f3c;color:#d4e8c0;cursor:pointer;font-size:12px;font-weight:600;transition:.15s}
-.tool:hover{border-color:#8bc34a;color:#fff}
-.tool.active{border-color:#8bc34a;background:#6a9f2c;color:#fff}
-.pwrap{background:#5a8f3c;border:2px solid #3a6b1e;border-radius:6px;overflow:hidden;position:relative}
-canvas#fc{display:block;cursor:crosshair;width:100%;background:#5a8f3c}
+.tool{padding:7px 12px;border-radius:6px;border:2px solid #555;background:#323232;color:#ccc;cursor:pointer;font-size:12px;font-weight:600;transition:.15s}
+.tool:hover{border-color:#888;color:#fff}
+.tool.active{border-color:#fff;background:#444;color:#fff}
+.pwrap{background:#323232;border:2px solid #444;border-radius:6px;overflow:hidden;position:relative}
+canvas#fc{display:block;cursor:crosshair;width:100%;background:#323232}
 .tpl{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
 .tplb{padding:6px 12px;background:#16213e;border:1px solid #444;border-radius:4px;color:#ccc;cursor:pointer;font-size:12px}
 .tplb:hover{border-color:#e94560;color:#fff}
@@ -417,14 +417,14 @@ function renderHub(){
 // === FACTORY PLANNER ===
 const G=32;
 const BLDG={
-  extractor:{cells:[[0,0],[1,0],[2,0],[0,1],[1,1],[2,1],[0,2],[1,2],[2,2]],label:'Extractor'},
-  adder:{cells:[[0,0],[1,0],[0,1],[1,1]],label:'Adder',op:'+'},
-  multiplier:{cells:[[0,0],[1,0],[2,0]],label:'Multiplier',op:'\u00d7'},
-  subtractor:{cells:[[0,0],[0,1],[1,1]],label:'Subtractor',op:'-'},
-  divider:{cells:[[0,0],[1,0],[0,1],[1,1]],label:'Divider',op:'\u00f7'},
-  exponentiator:{cells:[[0,0],[0,1],[1,1]],label:'Exponent',op:'^'},
-  storage:{cells:[[0,0],[1,0],[2,0],[0,1],[1,1],[2,1],[0,2],[1,2],[2,2]],label:'Storage'},
-  hub:{cells:[[0,0],[1,0],[2,0],[3,0],[4,0],[5,0],[0,1],[1,1],[2,1],[3,1],[4,1],[5,1],[0,2],[1,2],[2,2],[3,2],[4,2],[5,2],[0,3],[1,3],[2,3],[3,3],[4,3],[5,3],[0,4],[1,4],[2,4],[3,4],[4,4],[5,4],[0,5],[1,5],[2,5],[3,5],[4,5],[5,5]],label:'HUB'}
+  extractor:{cells:[[0,0],[1,0],[2,0],[0,1],[1,1],[2,1],[0,2],[1,2],[2,2]],label:'Extractor',col:'#b01820'},
+  adder:{cells:[[0,0],[1,0],[0,1],[1,1]],label:'Adder',op:'+',col:'#28a000'},
+  multiplier:{cells:[[0,0],[1,0],[2,0]],label:'Multiplier',op:'\u00d7',col:'#4050f0'},
+  subtractor:{cells:[[0,0],[0,1],[1,1]],label:'Subtractor',op:'-',col:'#8810a8'},
+  divider:{cells:[[0,0],[1,0],[0,1],[1,1]],label:'Divider',op:'\u00f7',col:'#b85810'},
+  exponentiator:{cells:[[0,0],[0,1],[1,1]],label:'Exponent',op:'^',col:'#784800'},
+  storage:{cells:[[0,0],[1,0],[2,0],[0,1],[1,1],[2,1],[0,2],[1,2],[2,2]],label:'Storage',col:'#00b8b8'},
+  hub:{cells:[[0,0],[1,0],[2,0],[3,0],[4,0],[5,0],[0,1],[1,1],[2,1],[3,1],[4,1],[5,1],[0,2],[1,2],[2,2],[3,2],[4,2],[5,2],[0,3],[1,3],[2,3],[3,3],[4,3],[5,3],[0,4],[1,4],[2,4],[3,4],[4,4],[5,4],[0,5],[1,5],[2,5],[3,5],[4,5],[5,5]],label:'HUB',col:'#205c8e'}
 };
 function getCells(type){return BLDG[type]?BLDG[type].cells:[[0,0]];}
 let curTool='select',pState={buildings:[],belts:[],dragging:false,hovered:null};
@@ -438,30 +438,30 @@ function setTool(t){
 function rr(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.quadraticCurveTo(x+w,y,x+w,y+r);ctx.lineTo(x+w,y+h-r);ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);ctx.lineTo(x+r,y+h);ctx.quadraticCurveTo(x,y+h,x,y+h-r);ctx.lineTo(x,y+r);ctx.quadraticCurveTo(x,y,x+r,y);ctx.closePath();}
 
 function drawPlanner(){
-  ctx.fillStyle='#5a8f3c';ctx.fillRect(0,0,canvas.width,canvas.height);
-  ctx.strokeStyle='#4a7c2e';ctx.lineWidth=0.5;
+  ctx.fillStyle='#323232';ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.strokeStyle='rgba(255,255,255,0.08)';ctx.lineWidth=1;
   for(let x=0;x<=canvas.width;x+=G){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,canvas.height);ctx.stroke();}
   for(let y=0;y<=canvas.height;y+=G){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(canvas.width,y);ctx.stroke();}
   pState.belts.forEach(b=>drawBelt(b));
   pState.buildings.forEach(b=>drawBuilding(b));
   if(pState.hovered&&curTool!=='select'&&curTool!=='belt'){
     const cells=getCells(curTool);
-    const c=curTool==='eraser'?'#e74c3c':'#8bc34a';
+    const c=curTool==='eraser'?'#ff4444':(BLDG[curTool]?BLDG[curTool].col:'#888');
     cells.forEach(([dx,dy])=>{
       ctx.fillStyle=c+'44';ctx.fillRect((pState.hovered.x+dx)*G,(pState.hovered.y+dy)*G,G,G);
-      ctx.strokeStyle=c;ctx.lineWidth=1.5;ctx.setLineDash([4,4]);ctx.strokeRect((pState.hovered.x+dx)*G+1,(pState.hovered.y+dy)*G+1,G-2,G-2);ctx.setLineDash([]);
+      ctx.strokeStyle=c;ctx.lineWidth=2;ctx.setLineDash([6,4]);ctx.strokeRect((pState.hovered.x+dx)*G+1,(pState.hovered.y+dy)*G+1,G-2,G-2);ctx.setLineDash([]);
     });
   }
 }
 
 function drawBelt(b){
   const x=b.x*G,y=b.y*G;
-  ctx.fillStyle='#555';ctx.fillRect(x,y,G,G);
-  ctx.fillStyle='#666';ctx.fillRect(x+2,y+2,G-4,G-4);
+  ctx.fillStyle='#c89000';ctx.fillRect(x,y,G,G);
+  ctx.fillStyle='#a07800';ctx.fillRect(x+1,y+1,G-2,G-2);
   const dx=b.dx||0,dy=b.dy||0;
   if(dx!==0||dy!==0){
-    ctx.fillStyle='#999';
-    const cx=x+G/2,cy=y+G/2,s=G*0.22;
+    ctx.fillStyle='#323232';
+    const cx=x+G/2,cy=y+G/2,s=G*0.25;
     ctx.beginPath();
     if(dx>0){ctx.moveTo(cx-s,cy-s);ctx.lineTo(cx+s,cy);ctx.lineTo(cx-s,cy+s);}
     else if(dx<0){ctx.moveTo(cx+s,cy-s);ctx.lineTo(cx-s,cy);ctx.lineTo(cx+s,cy+s);}
@@ -476,45 +476,45 @@ function drawBuilding(b){
   const cells=getCells(b.type);
   if(b.type==='hub'){
     const x=b.x*G,y=b.y*G;
-    rr(x+2,y+2,6*G-4,6*G-4,10);ctx.fillStyle='#1565c0';ctx.fill();
-    ctx.strokeStyle='#42a5f5';ctx.lineWidth=3;ctx.stroke();
-    rr(x+8,y+8,6*G-16,6*G-16,8);ctx.fillStyle='#1e88e5';ctx.fill();
+    rr(x+2,y+2,6*G-4,6*G-4,8);ctx.fillStyle='#205c8e';ctx.fill();
+    ctx.strokeStyle='#4098d0';ctx.lineWidth=3;ctx.stroke();
+    rr(x+8,y+8,6*G-16,6*G-16,5);ctx.fillStyle='#1a4a72';ctx.fill();
     ctx.fillStyle='#fff';ctx.font='bold 20px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
     ctx.fillText('HUB',x+3*G,y+3*G-10);
-    ctx.font='11px sans-serif';ctx.fillStyle='#bbdefb';ctx.fillText('Level Target',x+3*G,y+3*G+10);
+    ctx.font='11px sans-serif';ctx.fillStyle='#88ccee';ctx.fillText('Level Target',x+3*G,y+3*G+10);
     return;
   }
   if(b.type==='extractor'){
     cells.forEach(([dx,dy])=>{
       const cx=(b.x+dx)*G,cy=(b.y+dy)*G;
-      ctx.fillStyle='#4a3728';ctx.fillRect(cx,cy,G,G);
-      ctx.strokeStyle='#5d4037';ctx.lineWidth=0.5;ctx.strokeRect(cx,cy,G,G);
+      ctx.fillStyle='#5a1018';ctx.fillRect(cx,cy,G,G);
+      ctx.strokeStyle='#701820';ctx.lineWidth=0.5;ctx.strokeRect(cx,cy,G,G);
     });
     const cx=b.x*G+1.5*G,cy=b.y*G+1.5*G;
-    ctx.beginPath();ctx.arc(cx,cy,1.3*G,0,Math.PI*2);ctx.fillStyle='#3e2723';ctx.fill();
-    ctx.strokeStyle='#8d6e63';ctx.lineWidth=2;ctx.stroke();
-    ctx.beginPath();ctx.arc(cx,cy,0.9*G,0,Math.PI*2);ctx.fillStyle='#4e342e';ctx.fill();
-    ctx.fillStyle='#d7ccc8';ctx.font='bold 13px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.beginPath();ctx.arc(cx,cy,1.3*G,0,Math.PI*2);ctx.fillStyle='#b01820';ctx.fill();
+    ctx.strokeStyle='#d02030';ctx.lineWidth=2;ctx.stroke();
+    ctx.beginPath();ctx.arc(cx,cy,0.8*G,0,Math.PI*2);ctx.fillStyle='#901018';ctx.fill();
+    ctx.fillStyle='#fff';ctx.font='bold 12px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
     ctx.fillText('EXT',cx,cy);
     return;
   }
   if(b.type==='storage'){
     cells.forEach(([dx,dy])=>{
       const cx=(b.x+dx)*G,cy=(b.y+dy)*G;
-      ctx.fillStyle='#37474f';ctx.fillRect(cx,cy,G,G);
-      ctx.strokeStyle='#546e7a';ctx.lineWidth=0.5;ctx.strokeRect(cx,cy,G,G);
+      ctx.fillStyle='#004848';ctx.fillRect(cx,cy,G,G);
+      ctx.strokeStyle='#006868';ctx.lineWidth=0.5;ctx.strokeRect(cx,cy,G,G);
     });
     const cx=b.x*G+1.5*G,cy=b.y*G+1.5*G;
-    rr(b.x*G+4,b.y*G+4,3*G-8,3*G-8,6);ctx.fillStyle='#263238';ctx.fill();
-    ctx.strokeStyle='#78909c';ctx.lineWidth=2;ctx.stroke();
-    ctx.fillStyle='#b0bec5';ctx.font='bold 13px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+    rr(b.x*G+3,b.y*G+3,3*G-6,3*G-6,5);ctx.fillStyle='#00b8b8';ctx.fill();
+    ctx.strokeStyle='#00e0e0';ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle='#fff';ctx.font='bold 13px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
     ctx.fillText('STO',cx,cy);
     return;
   }
   cells.forEach(([dx,dy])=>{
     const cx=(b.x+dx)*G,cy=(b.y+dy)*G;
-    ctx.fillStyle='#455a64';ctx.fillRect(cx,cy,G,G);
-    ctx.strokeStyle='#607d8b';ctx.lineWidth=0.5;ctx.strokeRect(cx,cy,G,G);
+    ctx.fillStyle='#3a3a3a';ctx.fillRect(cx,cy,G,G);
+    ctx.strokeStyle='#555';ctx.lineWidth=0.5;ctx.strokeRect(cx,cy,G,G);
   });
   if(b.type==='adder'||b.type==='divider'){
     const ax=b.x*G+2,ay=b.y*G+2;
@@ -528,18 +528,16 @@ function drawBuilding(b){
     ctx.fillStyle='#1565c0';rr(ox2,oy2,G-4,G-4,4);ctx.fill();
     ctx.fillStyle='#fff';ctx.font='bold 10px sans-serif';
     ctx.fillText(b.type==='adder'?'A+B':'A\u00f7B',ox2+(G-4)/2,oy2+(G-4)/2);
-    const mx=b.x*G+G,mx2=b.y*G+G;
-    ctx.fillStyle='#b0bec5';ctx.font='bold 16px sans-serif';
-    ctx.fillText(d.op,mx+G/2,mx2+G/2);
-    ctx.fillStyle='#78909c';ctx.font='9px sans-serif';ctx.fillText(d.label,mx+G/2,mx2+G/2+14);
+    const mx=b.x*G+G,my=b.y*G+G;
+    ctx.fillStyle=d.col;ctx.font='bold 18px sans-serif';
+    ctx.fillText(d.op,mx+G/2,my+G/2);
   }else if(b.type==='multiplier'){
     const ax=b.x*G+2,ay=b.y*G+2;
     ctx.fillStyle='#c62828';rr(ax,ay,G-4,G-4,4);ctx.fill();
     ctx.fillStyle='#fff';ctx.font='bold 13px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
     ctx.fillText('A',ax+(G-4)/2,ay+(G-4)/2);
     const cx=b.x*G+G+G/2,cy=b.y*G+G/2;
-    ctx.fillStyle='#e65100';ctx.font='bold 18px sans-serif';ctx.fillText('\u00d7',cx,cy);
-    ctx.fillStyle='#78909c';ctx.font='9px sans-serif';ctx.fillText(d.label,cx,cy+14);
+    ctx.fillStyle=d.col;ctx.font='bold 18px sans-serif';ctx.fillText('\u00d7',cx,cy);
     const ox=(b.x+2)*G+2,oy=b.y*G+2;
     ctx.fillStyle='#1565c0';rr(ox,oy,G-4,G-4,4);ctx.fill();
     ctx.fillStyle='#fff';ctx.font='bold 10px sans-serif';
@@ -557,9 +555,8 @@ function drawBuilding(b){
     ctx.fillStyle='#fff';ctx.font='bold 10px sans-serif';
     ctx.fillText(b.type==='subtractor'?'A-B':'A^B',ox3+(G-4)/2,oy3+(G-4)/2);
     const cmx=b.x*G+G+G/2,cmy=b.y*G+G+G/2;
-    ctx.fillStyle='#b0bec5';ctx.font='bold 18px sans-serif';
+    ctx.fillStyle=d.col;ctx.font='bold 18px sans-serif';
     ctx.fillText(d.op,cmx,cmy-4);
-    ctx.fillStyle='#78909c';ctx.font='9px sans-serif';ctx.fillText(d.label,cmx,cmy+12);
   }
 }
 
